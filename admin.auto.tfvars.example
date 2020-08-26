@@ -1,0 +1,3 @@
+ec2_key_name      = "my-ec2-key"
+allowed_mgmt_cidr = "<ipchicken>/32"
+region            = "us-east-1"
