@@ -1,11 +1,15 @@
+provider aws {
+  region = var.region
+}
+
 provider bigip {
   alias    = "bigip_az1"
-  address  = "https://${var.mgmt_public_ip_01}"
+  address  = "https://${var.bigip_mgmt_ips.value[0]}"
   username = var.adminUsername
   password = data.aws_secretsmanager_secret_version.secret.secret_string
 }
 data aws_secretsmanager_secret_version secret {
-  secret_id = var.secrets_manager_name
+  secret_id = var.aws_secretmanager_secret_name.value
 }
 
 #application services 3 template
@@ -13,8 +17,8 @@ data template_file as3_json {
   template = "${file("./templates/as3.json.tpl")}"
   vars = {
     uuid                   = uuid()
-    virtualAddressExternal = var.publicIp
-    virtualAddressInternal = var.privateIp
+    virtualAddressExternal = var.bigip_public_ips.value[0]
+    virtualAddressInternal = var.bigip_private_ips.value[0]
   }
 }
 

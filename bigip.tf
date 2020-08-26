@@ -41,7 +41,7 @@ module bigip {
     random_id.id.hex
   )
   f5_instance_count           = length(local.bigip_azs)
-  ec2_instance_type           = "m5.large"
+  ec2_instance_type           = "m5.2xlarge"
   ec2_key_name                = var.ec2_key_name
   aws_secretmanager_secret_id = aws_secretsmanager_secret.bigip.id
   mgmt_subnet_security_group_ids = [

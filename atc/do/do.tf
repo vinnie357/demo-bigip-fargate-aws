@@ -1,21 +1,25 @@
+provider aws {
+  region = var.region
+}
+
 provider bigip {
   alias    = "bigip_az1"
-  address  = "https://${var.mgmt_public_ip_01}"
+  address  = "https://${var.bigip_mgmt_ips.value[0]}"
   username = var.adminUsername
   password = data.aws_secretsmanager_secret_version.secret.secret_string
 }
 
 #Declarative Onboarding template 01
 data aws_secretsmanager_secret_version secret {
-  secret_id = var.secrets_manager_name
+  secret_id = var.aws_secretmanager_secret_name.value
 }
 
 data template_file do_json {
   template = file("./templates/standalone.json.tpl")
 
   vars = {
-    local_host   = var.internal_hostname
-    local_selfip = var.privateIp
+    local_host   = var.bigip_mgmt_dns_private.value[0]
+    local_selfip = "${var.bigip_private_ips.value[0]}/24"
     gateway      = "10.0.0.1"
     dns_server   = var.dns_server
     ntp_server   = var.ntp_server

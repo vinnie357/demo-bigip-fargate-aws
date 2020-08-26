@@ -3,13 +3,26 @@ output "mgmt_public_ips" {
   description = "List of BIG-IP public IP addresses for the management interfaces"
   value       = aws_eip.mgmt[*].public_ip
 }
-
+# BIG-IP Traffic internal IP Addresses
+output "traffic_private_ips" {
+  description = "List of BIG-IP public IP addresses for the traffic interfaces"
+  value       = aws_eip.public[*].private_ip
+}
+# BIG-IP Traffic Publix IP Addresses
+output "traffic_public_ips" {
+  description = "List of BIG-IP public IP addresses for the traffic interfaces"
+  value       = aws_eip.public[*].public_ip
+}
 # BIG-IP Management Public DNS
 output "mgmt_public_dns" {
   description = "List of BIG-IP public DNS records for the management interfaces"
   value       = aws_eip.mgmt[*].public_dns
 }
-
+# BIG-IP Management Private DNS
+output "mgmt_private_dns" {
+  description = "List of BIG-IP public DNS records for the management interfaces"
+  value       = aws_eip.mgmt[*].private_dns
+}
 # BIG-IP Management Port
 output "mgmt_port" {
   description = "HTTPS Port used for the BIG-IP management interface"

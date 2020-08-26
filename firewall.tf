@@ -19,7 +19,13 @@ module web_server_secure_sg {
   vpc_id              = module.vpc.vpc_id
   ingress_cidr_blocks = [var.allowed_app_cidr]
 }
-
+module fargate_secure_sg {
+  source             = "terraform-aws-modules/security-group/aws//modules/https-443"
+  name               = format("%s-fargate-secure-%s", var.prefix, random_id.id.hex)
+  vpc_id             = module.vpc.vpc_id
+  ingress_cidr_blocks = [module.vpc.public_subnets_cidr_blocks[0]]
+  egress_cidr_blocks = [var.allowed_app_cidr]
+}
 #
 # Create a security group for SSH traffic
 #

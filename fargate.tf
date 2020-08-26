@@ -51,7 +51,7 @@ resource aws_ecs_service main {
   launch_type     = "FARGATE"
   network_configuration {
     subnets = [module.vpc.public_subnets[0]]
-
+    security_groups = [module.fargate_secure_sg.this_security_group_id]
   }
   service_registries {
     registry_arn = aws_service_discovery_service.example.arn

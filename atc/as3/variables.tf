@@ -1,5 +1,6 @@
 variable adminUsername { default = "admin" }
-variable mgmt_public_ip_01 {}
-variable secrets_manager_name {}
-variable privateIp {}
-variable publicIp {}
+variable region { default = "us-east-1" }
+variable bigip_mgmt_ips {}
+variable aws_secretmanager_secret_name {}
+variable bigip_private_ips {}
+variable bigip_public_ips {}

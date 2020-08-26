@@ -1,4 +1,0 @@
-mgmt_public_ip_01 ="184.73.191.138"
-secrets_manager_name="bigip-fargate-bigip-secret-ecc4"
-privateIp="10.0.0.34/24"
-internal_hostname ="ip-10-0-10-242.ec2.internal"
