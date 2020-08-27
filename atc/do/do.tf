@@ -18,12 +18,14 @@ data template_file do_json {
   template = file("./templates/standalone.json.tpl")
 
   vars = {
-    local_host   = var.bigip_mgmt_dns_private.value[0]
-    local_selfip = "${var.bigip_private_ips.value[0]}/24"
-    gateway      = "10.0.0.1"
-    dns_server   = var.dns_server
-    ntp_server   = var.ntp_server
-    timezone     = var.timezone
+    local_host      = var.bigip_mgmt_dns_private.value[0]
+    local_selfip    = "${var.bigip_private_ips.value[0]}/24"
+    dns_server      = var.dns_server
+    ntp_server      = var.ntp_server
+    timezone        = var.timezone
+    appDomain       = var.appDomain.value
+    default_gateway = cidrhost(var.external_network_cidr.value, 1)
+
   }
 }
 

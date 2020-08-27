@@ -35,10 +35,10 @@
             ],
             "members": [
                     {
-                        "servicePort": 80,
+                        "servicePort": ${appPort},
                         "addressDiscovery": "fqdn",
                         "autoPopulate": true,
-                        "hostname": "example.example.my-project.local"
+                        "hostname": "${appFqdn}"
                     }
             ]
           },

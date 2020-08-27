@@ -1,3 +1,12 @@
+provider aws {
+  region = var.region
+}
+#
+# Create a random id
+#
+resource random_id id {
+  byte_length = 2
+}
 
 resource aws_vpc terraform-vpc {
   cidr_block           = "10.0.0.0/16"
@@ -63,30 +72,6 @@ resource aws_subnet public-b {
     Environment = "dev"
   }
 }
-resource aws_subnet private-a {
-  vpc_id                  = aws_vpc.terraform-vpc.id
-  cidr_block              = "10.0.3.0/24"
-  map_public_ip_on_launch = "false"
-  availability_zone       = "${var.region}a"
-
-  tags = {
-    Name        = format("%s-private-%s", var.prefix, random_id.id.hex)
-    Terraform   = "true"
-    Environment = "dev"
-  }
-}
-resource aws_subnet private-b {
-  vpc_id                  = aws_vpc.terraform-vpc.id
-  cidr_block              = "10.0.4.0/24"
-  map_public_ip_on_launch = "false"
-  availability_zone       = "${var.region}b"
-
-  tags = {
-    Name        = format("%s-private-%s", var.prefix, random_id.id.hex)
-    Terraform   = "true"
-    Environment = "dev"
-  }
-}
 
 
 resource aws_internet_gateway gw {
@@ -99,20 +84,6 @@ resource aws_internet_gateway gw {
   }
 }
 
-resource aws_eip nat_gw {
-  vpc = true
-}
-
-resource aws_nat_gateway gw {
-  allocation_id = aws_eip.nat_gw.id
-  subnet_id     = aws_subnet.public-a.id
-
-  tags = {
-    Name        = format("%s-nat-gateway-%s", var.prefix, random_id.id.hex)
-    Terraform   = "true"
-    Environment = "dev"
-  }
-}
 resource aws_route_table rt1 {
   vpc_id = aws_vpc.terraform-vpc.id
 
@@ -131,27 +102,7 @@ resource aws_route_table rt1 {
   }
 }
 
-resource aws_route_table fargate-rt {
-  vpc_id = aws_vpc.terraform-vpc.id
-
-  route {
-    cidr_block     = "0.0.0.0/0"
-    nat_gateway_id = aws_nat_gateway.gw.id
-  }
-
-  tags = {
-    Name        = format("%s-fargate-rt-%s", var.prefix, random_id.id.hex)
-    Terraform   = "true"
-    Environment = "dev"
-  }
-}
-
 resource aws_main_route_table_association association-subnet {
   vpc_id         = aws_vpc.terraform-vpc.id
   route_table_id = aws_route_table.rt1.id
-}
-
-resource aws_route_table_association association-fargate {
-  subnet_id      = aws_subnet.private-a.id
-  route_table_id = aws_route_table.fargate-rt.id
 }

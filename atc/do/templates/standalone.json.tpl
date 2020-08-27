@@ -14,10 +14,12 @@
         "myDns": {
           "class": "DNS",
           "nameServers": [
+              "10.0.0.2",
               "169.254.169.254",
               "${dns_server}"
           ],
           "search": [
+              "${appDomain}",
               "ec2.internal",
               "compute-1.internal"
           ]
@@ -53,6 +55,11 @@
             "vlan": "external",
             "allowService": "default",
             "trafficGroup": "traffic-group-local-only"
+        },
+        "default": {
+            "class": "Route",
+            "gw": "${default_gateway}",
+            "network": "default"
         }
     }
   }

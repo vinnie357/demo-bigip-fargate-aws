@@ -1,11 +1,11 @@
 resource aws_service_discovery_private_dns_namespace example {
-  name        = "example.my-project.local"
+  name        = var.app_domain
   description = "example"
-  vpc         = module.vpc.vpc_id
+  vpc         = aws_vpc.terraform-vpc.id
 }
 
 resource aws_service_discovery_service example {
-  name = "example"
+  name = var.app_name
   dns_config {
     namespace_id = aws_service_discovery_private_dns_namespace.example.id
     dns_records {

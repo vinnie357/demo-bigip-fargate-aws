@@ -1,8 +1,19 @@
-# VPC
+## VPC
 output vpc_id {
-  value = module.vpc.vpc_id
+  value = aws_vpc.terraform-vpc.id
 }
 
+## app
+output "appPort" {
+  value = var.app_port
+}
+output "appFqdn" {
+  value = "${aws_service_discovery_service.example.name}.${aws_service_discovery_private_dns_namespace.example.name}"
+}
+output "appDomain" {
+  value = aws_service_discovery_private_dns_namespace.example.name
+}
+## BIG-IP
 # BIG-IP Management Public IP Addresses
 output bigip_mgmt_ips {
   value = module.bigip.mgmt_public_ips
@@ -33,4 +44,8 @@ output bigip_mgmt_port {
 # BIG-IP Password Secret name
 output aws_secretmanager_secret_name {
   value = aws_secretsmanager_secret.bigip.name
+}
+# BIG-IP external network cidr
+output external_network_cidr {
+  value = aws_subnet.public-a.cidr_block
 }

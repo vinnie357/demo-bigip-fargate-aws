@@ -1,10 +1,4 @@
 #https://github.com/f5devcentral/terraform-aws-bigip/blob/master/examples/2_nic_with_new_vpc/main.tf
-#
-# Create a random id
-#
-resource random_id id {
-  byte_length = 2
-}
 
 #
 # Create random password for BIG-IP
@@ -40,23 +34,29 @@ module bigip {
     var.prefix,
     random_id.id.hex
   )
-  f5_instance_count           = length(local.bigip_azs)
+  # f5_instance_count           = length(local.bigip_azs)
+  f5_instance_count           = 1
   ec2_instance_type           = "m5.2xlarge"
   ec2_key_name                = var.ec2_key_name
   aws_secretmanager_secret_id = aws_secretsmanager_secret.bigip.id
   mgmt_subnet_security_group_ids = [
-    module.web_server_secure_sg.this_security_group_id,
-    module.ssh_secure_sg.this_security_group_id
+    # module.web_server_secure_sg.this_security_group_id,
+    # module.ssh_secure_sg.this_security_group_id
+    aws_security_group.f5_management.id
+
   ]
 
   public_subnet_security_group_ids = [
-    module.web_server_sg.this_security_group_id,
-    module.web_server_secure_sg.this_security_group_id
+    # module.web_server_sg.this_security_group_id,
+    # module.web_server_secure_sg.this_security_group_id
+    aws_security_group.f5_data.id
   ]
 
   #  vpc_public_subnet_ids = module.vpc.public_subnets
   #  vpc_mgmt_subnet_ids   = module.vpc.database_subnets
 
-  vpc_public_subnet_ids = slice(module.vpc.public_subnets, 0, 1)
-  vpc_mgmt_subnet_ids   = slice(module.vpc.database_subnets, 0, 1)
+  #vpc_public_subnet_ids = slice(module.vpc.public_subnets, 0, 1)
+  #vpc_mgmt_subnet_ids   = slice(module.vpc.database_subnets, 0, 1)
+  vpc_mgmt_subnet_ids   = [aws_subnet.f5-management-a.id]
+  vpc_public_subnet_ids = [aws_subnet.public-a.id]
 }

@@ -8,7 +8,12 @@ variable aws_secretmanager_secret_name {}
 variable bigip_private_ips {}
 variable bigip_mgmt_dns_private {}
 
-
+variable appDomain {
+  description = "app domain for dns lookup"
+}
+variable external_network_cidr {
+  description = "cidr for public network"
+}
 # optional
 variable "vpc_id" {
   description = "vpc_id"

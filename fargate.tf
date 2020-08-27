@@ -50,8 +50,8 @@ resource aws_ecs_service main {
   desired_count   = var.app_count
   launch_type     = "FARGATE"
   network_configuration {
-    subnets = [module.vpc.public_subnets[0]]
-    security_groups = [module.fargate_secure_sg.this_security_group_id]
+    subnets         = [aws_subnet.private-a.id]
+    security_groups = [aws_security_group.fargate_sg.id]
   }
   service_registries {
     registry_arn = aws_service_discovery_service.example.arn

@@ -1,17 +1,31 @@
+variable app_name {
+  type        = string
+  description = "app A record name for route53"
+  default     = "example"
+}
+variable app_domain {
+  type        = string
+  description = "app private dns domain for route53"
+  default     = "example.my-project.local"
+}
+
 variable app_image {
   description = "Docker image to run in the ECS cluster"
   #default     = "ami-04c22ba97a0c063c4"
-  default = "httpd:2.4"
+  #default = "httpd:2.4"
+  default = "bkimminich/juice-shop"
 }
 
 variable command {
-  default = "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
+  default = ""
+  #default = "/bin/sh -c \"echo '<html> <head> <title>Amazon ECS Sample App</title> <style>body {margin-top: 40px; background-color: #333;} </style> </head><body> <div style=color:white;text-align:center> <h1>Amazon ECS Sample App</h1> <h2>Congratulations!</h2> <p>Your application is now running on a container in Amazon ECS.</p> </div></body></html>' >  /usr/local/apache2/htdocs/index.html && httpd-foreground\""
 }
 
 variable app_port {
   description = "Port exposed by the docker image to redirect traffic to"
   #. <-- we will need this value
-  default = 80
+  #default = 80
+  default = 3000
 }
 
 variable app_count {

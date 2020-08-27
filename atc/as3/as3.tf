@@ -19,6 +19,8 @@ data template_file as3_json {
     uuid                   = uuid()
     virtualAddressExternal = var.bigip_public_ips.value[0]
     virtualAddressInternal = var.bigip_private_ips.value[0]
+    appPort                = var.appPort.value
+    appFqdn                = var.appFqdn.value
   }
 }
 
